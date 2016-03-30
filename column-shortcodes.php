@@ -187,6 +187,14 @@ class Codepress_Column_Shortcodes {
 			$content = '<p>'. $content . '</p>';
 		}
 
+		// Schlameel Begin - Added to support embedded columns
+		// Strip inner
+		$pos = strpos( $name, '_inner' );
+		if ( false !== $pos ) {
+			$name = str_replace( '_inner', '', $name );
+		}
+		// Schlameel End
+
 		// last class
 		$pos = strpos( $name, '_last' );
 
@@ -403,7 +411,33 @@ class Codepress_Column_Shortcodes {
 					'key' 			=> ''
 				)
 			);
+			
+			// Schlameel Begin - Added to support embedded columns
+			if ( 'one_half' == $short || 'one_third' == $short ) {
+				$shortcodes[] =	array(
+					'name' 		=> "{$shortcode}_inner",
+					'class'		=> "{$short}",
+					'options' 	=> array(
+						'display_name' 	=> $options['display_name'] . ' (' . __('inner', CPSH_TEXTDOMAIN) . ')',
+						'open_tag' 		=> '\n'."[{$shortcode}_inner]",
+						'close_tag' 	=> "[/{$shortcode}_inner]".'\n',
+						'key' 			=> ''
+					)
+				);
+
+				$shortcodes[] =	array(
+					'name' 		=> "{$shortcode}_inner_last",
+					'class'		=> "{$short}_inner_last",
+					'options' 	=> array(
+						'display_name' 	=> $options['display_name'] . ' (' . __('inner last', CPSH_TEXTDOMAIN) . ')',
+						'open_tag' 		=> '\n'."[{$shortcode}_inner_last]",
+						'close_tag' 	=> "[/{$shortcode}_inner_last]".'\n',
+						'key' 			=> ''
+					)
+				);
+			}
 		}
+		// Schlameel End
 
 		return $shortcodes;
 	}
